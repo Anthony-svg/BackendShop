@@ -5,8 +5,8 @@ using WebApp.Controllers.Models;
 
 namespace WebApp.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Route("api/inventario")]
+    
     public class InventarioController : ControllerBase
     {
 
@@ -23,11 +23,11 @@ namespace WebApp.Controllers
             return await context.Inventario.ToListAsync();
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}",Name = "ObtenerInventarioPorId")]
         public async Task<ActionResult<Inventario>> Get(int id)
         {
             var Inventario = await context.Inventario.FirstOrDefaultAsync(x => x.ProductoId == id);
-            if (Inventario is null)
+            if (Inventario is null) 
             {
                 return NotFound();
             }
@@ -35,15 +35,16 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<CreatedAtRouteResult> Post(Inventario inventario)
+        public async Task<CreatedAtRouteResult> Post([FromBody] Inventario inventario)
         {
+
             context.Add(inventario);
             await context.SaveChangesAsync();
             return CreatedAtRoute("ObtenerInventarioPorId", new { id = inventario.ProductoId }, inventario);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Inventario>> Put(int id, Inventario inventario)
+        public async Task<ActionResult<Inventario>> Put(int id,[FromBody] Inventario inventario)
         {
             var existeInventario = await context.Inventario.AnyAsync(x => x.ProductoId == id);
 
@@ -71,43 +72,5 @@ namespace WebApp.Controllers
 
             return NoContent();
         }
-
-
-        //private readonly string _connectionString;
-
-        //public InventarioController(string connectionString) {
-
-        //    _connectionString = connectionString;
-        //}
-
-        //[HttpPost]
-        //public ActionResult GuardarDataInventario(Inventario inventario)
-        //{
-        //    //SqlConnection connection = new SqlConnection
-        //    //{
-        //    //    ConnectionString = "Server=LAPTOP-G37M03I6;Database=TiendaDB;Trusted_Connection=True;TrustServerCertificate=True;"
-        //    //};
-
-        //    using (SqlConnection connection = new SqlConnection(_connectionString))
-        //    {
-        //        SqlCommand command = new SqlCommand
-        //        {
-        //            CommandText = "sp_GuardarDataInventario",
-        //            CommandType = System.Data.CommandType.StoredProcedure,
-        //            Connection = connection
-        //        };
-        //        command.Parameters.AddWithValue("@ProductoId", inventario.ProductoId);
-        //        command.Parameters.AddWithValue("@ProductoNombre", inventario.ProductoNombre);
-        //        command.Parameters.AddWithValue("@StockDisponible", inventario.StockDisponible);
-        //        command.Parameters.AddWithValue("@ReponerStock", inventario.ReponerStock);
-
-        //        connection.Open();
-        //        command.ExecuteNonQuery();
-        //        connection.Close();
-        //    }
-
-        //    return Ok("Datos de inventario guardados");
-
-        //}
     }
 }

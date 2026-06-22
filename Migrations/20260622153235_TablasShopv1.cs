@@ -5,20 +5,24 @@
 namespace WebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class TablaCliente : Migration
+    public partial class TablasShopv1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Telefono",
-                table: "Cliente",
-                newName: "TelefonoCliente");
-
-            migrationBuilder.RenameColumn(
-                name: "Id",
-                table: "Cliente",
-                newName: "IdCliente");
+            migrationBuilder.CreateTable(
+                name: "Cliente",
+                columns: table => new
+                {
+                    IdCliente = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NombreCliente = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TelefonoCliente = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cliente", x => x.IdCliente);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Inventario",
@@ -40,17 +44,10 @@ namespace WebApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Cliente");
+
+            migrationBuilder.DropTable(
                 name: "Inventario");
-
-            migrationBuilder.RenameColumn(
-                name: "TelefonoCliente",
-                table: "Cliente",
-                newName: "Telefono");
-
-            migrationBuilder.RenameColumn(
-                name: "IdCliente",
-                table: "Cliente",
-                newName: "Id");
         }
     }
 }

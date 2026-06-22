@@ -11,8 +11,8 @@ using WebApp;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(ApplicarionDbContext))]
-    [Migration("20260616161216_TablaCliente")]
-    partial class TablaCliente
+    [Migration("20260622153235_TablasShopv1")]
+    partial class TablasShopv1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
